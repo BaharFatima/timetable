@@ -1,0 +1,487 @@
+<html>
+    <head>
+<style>
+  /* Global CSS variables for easier theming */
+  :root {
+    /* Light mode defaults - based on your original code */
+    --bg-primary: #ffffff;
+    --color-text-primary: #333333;
+    --color-text-secondary: #666666;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  }
+
+  /* Dark mode specific variables */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-primary: #1e1e1e; /* Dark background */
+      --color-text-primary: #e0e0e0; /* Light gray text */
+      --color-text-secondary: #a0a0a0; /* Medium gray text */
+    }
+  }
+
+  /* Base styles applied to body */
+  body {
+    margin: 0;
+    padding: 20px; /* Some base padding for the body */
+    background-color: var(--bg-primary);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for theme change */
+  }
+
+  .tt-wrap {
+    padding: 1rem;
+    max-width: 600px; /* Limit width to mimic the image */
+    margin: 0 auto; /* Center the wrapper */
+  }
+
+  .tt-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+
+  .tt-header-main {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--color-text-primary);
+  }
+
+  .tt-subtitle {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+  }
+
+  .tt-options {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+    color: var(--color-text-secondary);
+    padding: 0 5px; /* Adjust padding for button look */
+    align-self: flex-start; /* Align with top of header */
+  }
+
+  /* Original classes for items, adjusted to use variables */
+  .tt-block { display: flex; align-items: stretch; gap: 12px; margin-bottom: 6px; }
+
+  .tt-time {
+    font-size: 14px; /* Adjusted font size */
+    font-weight: 500; /* Bolder time */
+    color: var(--color-text-secondary);
+    min-width: 52px;
+    padding-top: 10px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .tt-card {
+    flex: 1;
+    border-radius: 12px; /* Increased border-radius */
+    padding: 9px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 0.5px solid transparent;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: all 0.2s ease-in-out; /* Smooth transition for hover effects */
+  }
+  .tt-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .tt-icon {
+    font-size: 20px; /* Slightly larger icons */
+    flex-shrink: 0;
+    /* Attempt to make emojis monochrome for icon-like appearance in light mode */
+    filter: grayscale(0.5) opacity(0.8); /* Slightly desaturate emojis in light mode */
+  }
+
+  .tt-label { font-size: 15px; font-weight: 600; } /* Adjusted font-size and weight */
+  .tt-desc { font-size: 12px; margin-top: 1px; opacity: 0.8; } /* Added opacity */
+  .tt-dur {
+    font-size: 11px;
+    margin-left: auto;
+    flex-shrink: 0;
+    padding: 3px 9px; /* Adjusted padding */
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  /* --- Card Colors (Light Mode) --- */
+  .c-salah { background: #E1F5EE; border-color: #9FE1CB; }
+  .c-salah .tt-label { color: #085041; }
+  .c-salah .tt-desc { color: #0F6E56; }
+  .c-salah .tt-dur { background: #9FE1CB; color: #085041; }
+
+  .c-sleep { background: #EEEDFE; border-color: #CECBF6; }
+  .c-sleep .tt-label { color: #26215C; }
+  .c-sleep .tt-desc { color: #3C3489; }
+  .c-sleep .tt-dur { background: #CECBF6; color: #26215C; }
+
+  .c-nap { background: #FBEAF0; border-color: #F4C0D1; }
+  .c-nap .tt-label { color: #4B1528; }
+  .c-nap .tt-desc { color: #72243E; }
+  .c-nap .tt-dur { background: #F4C0D1; color: #4B1528; }
+
+  .c-study { background: #E6F1FB; border-color: #B5D4F4; }
+  .c-study .tt-label { color: #042C53; }
+  .c-study .tt-desc { color: #185FA5; }
+  .c-study .tt-dur { background: #B5D4F4; color: #042C53; }
+
+  .c-fun { background: #FAECE7; border-color: #F5C4B3; }
+  .c-fun .tt-label { color: #4A1B0C; }
+  .c-fun .tt-desc { color: #712B13; }
+  .c-fun .tt-dur { background: #F5C4B3; color: #4A1B0C; }
+
+  .c-scroll { background: #F1EFE8; border-color: #D3D1C7; }
+  .c-scroll .tt-label { color: #2C2C2A; }
+  .c-scroll .tt-desc { color: #5F5E5A; }
+  .c-scroll .tt-dur { background: #D3D1C7; color: #2C2C2A; }
+
+  /* Divider styling to match image */
+  .tt-divider {
+    font-size: 13px; /* Slightly larger */
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em; /* Slightly more letter spacing */
+    margin: 24px 0 12px 66px; /* Adjusted margins to align with time */
+    font-weight: 600; /* Bolder */
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 1.2rem;
+    font-size: 12px;
+  }
+  .leg-item { display: flex; align-items: center; gap: 5px; color: var(--color-text-secondary); }
+  .leg-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    /* Subtle border for dots, especially visible in dark mode */
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  /* Light mode legend dot colors (your original values) */
+  .leg-item:nth-child(1) .leg-dot { background:#1D9E75; }
+  .leg-item:nth-child(2) .leg-dot { background:#378ADD; }
+  .leg-item:nth-child(3) .leg-dot { background:#D4537E; }
+  .leg-item:nth-child(4) .leg-dot { background:#D85A30; }
+  .leg-item:nth-child(5) .leg-dot { background:#888780; }
+  .leg-item:nth-child(6) .leg-dot { background:#7F77DD; }
+
+
+  .warn-box {
+    background: #FAEEDA;
+    border: 0.5px solid #FAC775;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #633806;
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Added shadow to match cards */
+  }
+
+  /* --- Dark Mode Overrides --- */
+  @media (prefers-color-scheme: dark) {
+    .tt-card {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Darker shadow for dark mode */
+    }
+    .tt-card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    }
+    .tt-icon {
+      /* Invert and grayscale for dark mode, adjust brightness/opacity */
+      filter: brightness(0.8) grayscale(1) invert(1) opacity(0.7);
+      /* Note: For truly single-color icons, consider using SVG or an icon font. */
+    }
+    .leg-dot {
+      border: 1px solid rgba(255,255,255,0.1); /* Subtle border for dots in dark mode */
+    }
+
+    /* Dark mode specific colors for cards and elements - adjusted for image match */
+    .c-salah { background: #1D4132; border-color: #378D6A; }
+    .c-salah .tt-label { color: #82C0A5; }
+    .c-salah .tt-desc { color: #5FA58A; }
+    .c-salah .tt-dur { background: #378D6A; color: #E1F5EE; }
+
+    .c-sleep { background: #2A214D; border-color: #4D4293; }
+    .c-sleep .tt-label { color: #AFA9EC; }
+    .c-sleep .tt-desc { color: #8C84C9; }
+    .c-sleep .tt-dur { background: #4D4293; color: #EEEDFE; }
+
+    .c-nap { background: #4D2132; border-color: #8C415D; }
+    .c-nap .tt-label { color: #F4C0D1; }
+    .c-nap .tt-desc { color: #D4889E; }
+    .c-nap .tt-dur { background: #8C415D; color: #FBEAF0; }
+
+    .c-study { background: #1B3F63; border-color: #3E72A5; }
+    .c-study .tt-label { color: #8EB7E0; }
+    .c-study .tt-desc { color: #6C9BC9; }
+    .c-study .tt-dur { background: #3E72A5; color: #E6F1FB; }
+
+    .c-fun { background: #552B1B; border-color: #8C4D35; }
+    .c-fun .tt-label { color: #F5C4B3; }
+    .c-fun .tt-desc { color: #D19A84; }
+    .c-fun .tt-dur { background: #8C4D35; color: #FAECE7; }
+
+    .c-scroll { background: #3D3D3D; border-color: #6C6C6C; }
+    .c-scroll .tt-label { color: #D3D1C7; }
+    .c-scroll .tt-desc { color: #B4B2A9; }
+    .c-scroll .tt-dur { background: #6C6C6C; color: #F1EFE8; }
+
+    .warn-box {
+      background: #412402;
+      border-color: #633806;
+      color: #FAC775;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Legend dot colors for dark mode to match the cards */
+    .legend .leg-item:nth-child(1) .leg-dot { background: #1D4132; } /* Salah */
+    .legend .leg-item:nth-child(2) .leg-dot { background: #1B3F63; } /* Study */
+    .legend .leg-item:nth-child(3) .leg-dot { background: #4D2132; } /* Nap */
+    .legend .leg-item:nth-child(4) .leg-dot { background: #552B1B; } /* Food/family/fun */
+    .legend .leg-item:nth-child(5) .leg-dot { background: #3D3D3D; } /* Free time */
+    .legend .leg-item:nth-child(6) .leg-dot { background: #2A214D; } /* Sleep */
+  }
+</style>
+</head>
+<body>
+<div class="tt-wrap">
+  <div class="tt-header-container">
+    <div>
+      <h2 class="tt-header-main">Your daily schedule</h2>
+      <p class="tt-subtitle">Study extended to midnight - 5:00 AM wake - Nap included</p>
+    </div>
+    <button class="tt-options">···</button>
+  </div>
+
+  <div class="warn-box">
+    ⚠️ Sleep is now 12:00 AM – 5:00 AM (5 hrs). Try to keep this consistent and rely on the nap to compensate.
+  </div>
+
+  <div class="tt-divider">Early morning</div>
+
+  <div class="tt-block">
+    <div class="tt-time">5:00</div>
+    <div class="tt-card c-salah">
+      <span class="tt-icon">🕌</span>
+      <div>
+        <div class="tt-label">Wake up + Fajr</div>
+        <div class="tt-desc">Wudu, pray at 5:10</div>
+      </div>
+      <span class="tt-dur">15 min</span>
+    </div>
+  </div>
+
+  <div class="tt-block">
+    <div class="tt-time">5:15</div>
+    <div class="tt-card c-study">
+      <span class="tt-icon">📖</span>
+      <div>
+        <div class="tt-label">Study block 1</div>
+        <div class="tt-desc">Post-Fajr deep focus — sharpest hours</div>
+      </div>
+      <span class="tt-dur">3 hrs</span>
+    </div>
+  </div>
+
+  <div class="tt-block">
+    <div class="tt-time">8:15</div>
+    <div class="tt-card c-fun">
+      <span class="tt-icon">🍳</span>
+      <div>
+        <div class="tt-label">Breakfast + family time</div>
+        <div class="tt-desc">Eat, breathe, recharge</div>
+      </div>
+      <span class="tt-dur">45 min</span>
+    </div>
+  </div>
+
+  <div class="tt-divider">Morning</div>
+
+  <div class="tt-block">
+    <div class="tt-time">9:00</div>
+    <div class="tt-card c-study">
+      <span class="tt-icon">📖</span>
+      <div>
+        <div class="tt-label">Study block 2</div>
+        <div class="tt-desc">Concepts, reading, problem sets</div>
+      </div>
+      <span class="tt-dur">3 hrs</span>
+    </div>
+  </div>
+
+  <div class="tt-block">
+    <div class="tt-time">12:00</div>
+    <div class="tt-card c-fun">
+      <span class="tt-icon">🍽️</span>
+      <div>
+        <div class="tt-label">Lunch</div>
+        <div class="tt-desc">Step away, eat properly</div>
+      </div>
+      <span class="tt-dur">15 min</span>
+    </div>
+  </div>
+
+  <div class="tt-block">
+    <div class="tt-time">12:15</div>
+    <div class="tt-card c-salah">
+      <span class="tt-icon">🕌</span>
+      <div>
+        <div class="tt-label">Zohar + Asar</div>
+        <div class="tt-desc">Pray both back to back</div>
+      </div>
+      <span class="tt-dur">15 min</span>
+    </div>
+  </div>
+
+  <div class="tt-divider">Afternoon</div>
+
+  <div class="tt-block">
+    <div class="tt-time">12:30</div>
+    <div class="tt-card c-nap">
+      <span class="tt-icon">😴</span>
+      <div>
+        <div class="tt-label">Qailulah nap</div>
+        <div class="tt-desc">Set an alarm — don't go past 45 min</div>
+      </div>
+      <span class="tt-dur">45 min</span>
+    </div>
+  </div>
+
+  <div class="tt-block">
+    <div class="tt-time">1:15</div>
+    <div class="tt-card c-study">
+      <span class="tt-icon">📖</span>
+      <div>
+        <div class="tt-label">Study block 3</div>
+        <div class="tt-desc">Post-nap refresh — practice & revision</div>
+      </div>
+      <span class="tt-dur">3 hrs</span>
+    </div>
+  </div>
+
+  <div class="tt-block">
+    <div class="tt-time">4:15</div>
+    <div class="tt-card c-fun">
+      <span class="tt-icon">☕</span>
+      <div>
+        <div class="tt-label">Break + snack</div>
+        <div class="tt-desc">Short reset, stretch, step outside</div>
+      </div>
+      <span class="tt-dur">30 min</span>
+    </div>
+  </div>
+
+  <div class="tt-block">
+    <div class="tt-time">4:45</div>
+    <div class="tt-card c-study">
+      <span class="tt-icon">📖</span>
+      <div>
+        <div class="tt-label">Study block 4</div>
+        <div class="tt-desc">Afternoon grind</div>
+      </div>
+      <span class="tt-dur">1.5 hrs</span>
+    </div>
+  </div>
+
+  <div class="tt-divider">Evening</div>
+
+  <div class="tt-block">
+    <div class="tt-time">6:15</div>
+    <div class="tt-card c-fun">
+      <span class="tt-icon">🌇</span>
+      <div>
+        <div class="tt-label">Chill + dinner prep</div>
+        <div class="tt-desc">Wind down before Maghrib</div>
+      </div>
+      <span class="tt-dur">15 min</span>
+    </div>
+  </div>
+
+  <div class="tt-block">
+    <div class="tt-time">6:40</div>
+    <div class="tt-card c-salah">
+      <span class="tt-icon">🕌</span>
+      <div>
+        <div class="tt-label">Maghrib + Isha</div>
+        <div class="tt-desc">Pray both, take a moment after</div>
+      </div>
+      <span class="tt-dur">15 min</span>
+    </div>
+  </div>
+
+  <div class="tt-block">
+    <div class="tt-time">6:45</div>
+    <div class="tt-card c-fun">
+      <span class="tt-icon">🍽️</span>
+      <div>
+        <div class="tt-label">Dinner + family time</div>
+        <div class="tt-desc">Eat together, relax properly</div>
+      </div>
+      <span class="tt-dur">45 min</span>
+    </div>
+  </div>
+
+  <div class="tt-block">
+    <div class="tt-time">7:30</div>
+    <div class="tt-card c-scroll">
+      <span class="tt-icon">🎮</span>
+      <div>
+        <div class="tt-label">Free time</div>
+        <div class="tt-desc">Scroll, games, guilt-free zone</div>
+      </div>
+      <span class="tt-dur">30 min</span>
+    </div>
+  </div>
+
+  <div class="tt-divider">Night</div>
+
+  <div class="tt-block">
+    <div class="tt-time">8:00</div>
+    <div class="tt-card c-study">
+      <span class="tt-icon">📖</span>
+      <div>
+        <div class="tt-label">Study block 5</div>
+        <div class="tt-desc">Night session — revision, past papers, notes</div>
+      </div>
+      <span class="tt-dur">4 hrs</span>
+    </div>
+  </div>
+
+  <div class="tt-block">
+    <div class="tt-time">12:00</div>
+    <div class="tt-card c-sleep">
+      <span class="tt-icon">💤</span>
+      <div>
+        <div class="tt-label">Sleep</div>
+        <div class="tt-desc">Lights out — wake at 5:00 AM</div>
+      </div>
+      <span class="tt-dur">5 hrs</span>
+    </div>
+  </div>
+
+  <div class="legend">
+    <!-- Legend dot colors are adjusted in dark mode media query -->
+    <div class="leg-item"><div class="leg-dot" style="background:#1D9E75"></div>Salah (45 min)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#378ADD"></div>Study (14.5 hrs)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#D4537E"></div>Nap (45 min)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#D85A30"></div>Food/family/fun (2.75 hrs)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#888780"></div>Free time (30 min)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#7F77DD"></div>Sleep (5 hrs)</div>
+  </div>
+</div>
+</body>
+</html>
